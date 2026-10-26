@@ -18,14 +18,26 @@ const securityHeaders: Record<string, string> = {
   "Cross-Origin-Resource-Policy": "same-origin",
 };
 
+const PREFIX = "/pokedex-angular";
+
 Deno.serve(async (req) => {
-  let res = await serveDir(req, { fsRoot: "./public", quiet: true });
-  const lastSegment = new URL(req.url).pathname.split("/").pop() ?? "";
-  if (res.status === 404 && !lastSegment.includes(".")) {
-    const url = new URL(req.url);
-    url.pathname = "/index.html";
-    res = await serveDir(new Request(url, req), { fsRoot: "./public", quiet: true });
+  // La app pide sus recursos bajo /pokedex-angular/ (ruta de GitHub Pages).
+  // Se quita ese prefijo para encontrar los archivos en la raíz de public.
+  const original = new URL(req.url);
+  let request = req;
+  if (original.pathname === PREFIX || original.pathname.startsWith(PREFIX + "/")) {
+    original.pathname = original.pathname.slice(PREFIX.length) || "/";
+    request = new Request(original, req);
   }
+
+  let res = await serveDir(request, { fsRoot: "./public", quiet: true });
+  const lastSegment = new URL(request.url).pathname.split("/").pop() ?? "";
+  if (res.status === 404 && !lastSegment.includes(".")) {
+    const url = new URL(request.url);
+    url.pathname = "/index.html";
+    res = await serveDir(new Request(url, request), { fsRoot: "./public", quiet: true });
+  }
+
   const headers = new Headers(res.headers);
   for (const [k, v] of Object.entries(securityHeaders)) headers.set(k, v);
   return new Response(res.body, { status: res.status, headers });
