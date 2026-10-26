@@ -9,12 +9,6 @@ const securityHeaders: Record<string, string> = {
     "font-src 'self' data: https://fonts.gstatic.com; " +
     "img-src 'self' data:; " +
     "connect-src 'self' https://beta.pokeapi.co; " +
-    "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",    "default-src 'self'; " +
-    "script-src 'self'; " +
-    "style-src 'self'; " +
-    "font-src 'self' data:; " +
-    "img-src 'self' data: https://raw.githubusercontent.com; " +
-    "connect-src 'self' https://pokeapi.co; " +
     "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
   "X-Frame-Options": "DENY",
   "X-Content-Type-Options": "nosniff",
