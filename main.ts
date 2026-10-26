@@ -5,7 +5,9 @@ const securityHeaders: Record<string, string> = {
   "Content-Security-Policy":
     "default-src 'self'; " +
     "script-src 'self' https://cdnjs.cloudflare.com; " +
-"style-src 'self' https://fonts.googleapis.com; " +    "img-src 'self' data:; " +
+    "style-src 'self' https://fonts.googleapis.com; " +
+    "font-src 'self' https://fonts.gstatic.com data:; " +
+    "img-src 'self' data:; " +
     "connect-src 'self'; " +
     "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
   "X-Frame-Options": "DENY",
