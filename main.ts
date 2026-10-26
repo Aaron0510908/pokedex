@@ -5,6 +5,12 @@ const securityHeaders: Record<string, string> = {
   "Content-Security-Policy":
     "default-src 'self'; " +
     "script-src 'self'; " +
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+    "font-src 'self' data: https://fonts.gstatic.com; " +
+    "img-src 'self' data:; " +
+    "connect-src 'self' https://beta.pokeapi.co; " +
+    "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",    "default-src 'self'; " +
+    "script-src 'self'; " +
     "style-src 'self'; " +
     "font-src 'self' data:; " +
     "img-src 'self' data: https://raw.githubusercontent.com; " +
