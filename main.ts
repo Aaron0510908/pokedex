@@ -5,7 +5,7 @@ const securityHeaders: Record<string, string> = {
   "Content-Security-Policy":
     "default-src 'self'; " +
     "script-src 'self' https://cdnjs.cloudflare.com; " +
-    "style-src 'self' https://fonts.googleapis.com; " +
+    "style-src 'self' https://fonts.googleapis.com 'unsafe-hashes' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='; " +
     "font-src 'self' https://fonts.gstatic.com data:; " +
     "img-src 'self' data:; " +
     "connect-src 'self'; " +
