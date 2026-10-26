@@ -4,11 +4,11 @@ const securityHeaders: Record<string, string> = {
   "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
   "Content-Security-Policy":
     "default-src 'self'; " +
-    "script-src 'self' https://cdnjs.cloudflare.com; " +
-    "style-src 'self' https://fonts.googleapis.com; " +
-    "font-src 'self' https://fonts.gstatic.com data:; " +
-    "img-src 'self' data:; " +
-    "connect-src 'self'; " +
+    "script-src 'self'; " +
+    "style-src 'self'; " +
+    "font-src 'self' data:; " +
+    "img-src 'self' data: https://raw.githubusercontent.com; " +
+    "connect-src 'self' https://pokeapi.co; " +
     "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
   "X-Frame-Options": "DENY",
   "X-Content-Type-Options": "nosniff",
@@ -19,7 +19,13 @@ const securityHeaders: Record<string, string> = {
 };
 
 Deno.serve(async (req) => {
-  const res = await serveDir(req, { fsRoot: "./public", quiet: true });
+  let res = await serveDir(req, { fsRoot: "./public", quiet: true });
+  const lastSegment = new URL(req.url).pathname.split("/").pop() ?? "";
+  if (res.status === 404 && !lastSegment.includes(".")) {
+    const url = new URL(req.url);
+    url.pathname = "/index.html";
+    res = await serveDir(new Request(url, req), { fsRoot: "./public", quiet: true });
+  }
   const headers = new Headers(res.headers);
   for (const [k, v] of Object.entries(securityHeaders)) headers.set(k, v);
   return new Response(res.body, { status: res.status, headers });
